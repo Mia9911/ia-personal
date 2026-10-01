@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⭐ ASTRA — IA personal de Mia</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background:#160b2e; color:#f3ecff; padding:16px; max-width:760px; margin:0 auto; }
+  h1 { font-size:1.6em; text-align:center; background:linear-gradient(90deg,#c8a2ff,#7ee8fa); -webkit-background-clip:text; background-clip:text; color:transparent; margin:12px 0 4px; }
+  .sub { text-align:center; color:#b9a3e8; font-style:italic; font-size:.9em; margin-bottom:18px; }
+  .card { background:#221340; border:1px solid #4a2d8a; border-radius:16px; padding:16px; margin:14px 0; box-shadow:0 6px 18px rgba(0,0,0,.45); }
+  h2 { color:#c8a2ff; font-size:1.1em; margin-bottom:10px; border-bottom:1px solid #4a2d8a55; padding-bottom:6px; }
+  .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .bt { background:linear-gradient(135deg,#5b2ea6,#8a4fd3); border:none; border-radius:14px; padding:14px 8px; color:#fff; font-family:inherit; font-size:.92em; cursor:pointer; text-align:center; }
+  .bt:active { transform:scale(.97); }
+  .bt small { display:block; color:#e6d9ff; font-size:.75em; margin-top:4px; }
+  .modal { position:fixed; inset:0; background:rgba(10,4,25,.92); display:none; z-index:10; padding:18px; overflow-y:auto; }
+  .modal.on { display:block; }
+  .mbox { background:#221340; border:1px solid #6a3fc9; border-radius:16px; padding:18px; max-width:560px; margin:20px auto; }
+  .mbox h3 { color:#7ee8fa; margin-bottom:10px; }
+  .campo { margin:10px 0; }
+  .campo label { display:block; color:#c8a2ff; font-size:.85em; margin-bottom:4px; }
+  .campo input, .campo textarea, .campo select { width:100%; background:#160b2e; border:1px solid #6a3fc9; border-radius:10px; color:#f3ecff; padding:10px; font-family:inherit; font-size:.95em; }
+  .campo textarea { min-height:64px; }
+  .copiar { display:block; width:100%; margin-top:12px; background:linear-gradient(135deg,#0e8f8f,#12b5b5); color:#04211f; font-weight:bold; border:none; border-radius:12px; padding:13px; font-size:1em; cursor:pointer; font-family:inherit; }
+  .cerrar { background:none; border:none; color:#b9a3e8; font-size:.9em; cursor:pointer; margin-top:10px; font-family:inherit; }
+  .preview { background:#160b2e; border:1px dashed #6a3fc9; border-radius:10px; padding:10px; font-size:.85em; color:#e6d9ff; margin-top:10px; white-space:pre-wrap; }
+  .tabbar { display:flex; gap:8px; margin-bottom:10px; }
+  .tab { flex:1; background:#160b2e; border:1px solid #6a3fc9; color:#c8a2ff; border-radius:20px; padding:8px 4px; font-family:inherit; font-size:.85em; cursor:pointer; }
+  .tab.on { background:#7ee8fa; color:#160b2e; font-weight:bold; }
+  .item { display:flex; justify-content:space-between; gap:8px; background:#160b2e; border-radius:10px; padding:10px; margin:8px 0; font-size:.9em; }
+  .item b { color:#7ee8fa; font-size:.8em; display:block; }
+  .del { background:none; border:none; color:#ff8fa3; cursor:pointer; font-size:1em; }
+  .nuevo { display:flex; gap:8px; margin-top:8px; }
+  .nuevo input { flex:1; background:#160b2e; border:1px solid #6a3fc9; border-radius:10px; color:#f3ecff; padding:10px; font-family:inherit; }
+  .nuevo button { background:#8a4fd3; border:none; color:#fff; border-radius:10px; padding:0 16px; cursor:pointer; font-family:inherit; font-weight:bold; }
+  .paso { padding:8px 0; border-bottom:1px dashed #ffffff22; font-size:.9em; }
+  .paso b { color:#7ee8fa; }
+  .nota { font-size:.82em; color:#b9a3e8; text-align:center; margin-top:16px; font-style:italic; }
+  .verdad { background:linear-gradient(135deg,#221340,#2a1a52); border:1px solid #c8a2ff55; }
+  .verdad p { font-size:.88em; line-height:1.5; }
+</style>
+</head>
+<body>
+<h1>⭐ ASTRA</h1>
+<div class="sub">La IA personal de Mia — torre de control de bolsillo<br>El cerebro vive en tu chat (Arena.ai) — esta app lo enciende con UN toque</div>
+
+<div class="card verdad">
+  <h2>🧠 Cómo funciona tu IA (léelo una vez)</h2>
+  <p>ASTRA es el <b>panel de mando</b> de tu inteligencia artificial. El cerebro que piensa, crea e investiga es tu <b>torre en Arena.ai</b> — gratis, siempre disponible. Aquí tienes botones que arman tu pedido PERFECTO: lo copias, lo pegas en el chat de tu torre, y en minutos tienes el resultado. Sin instalar nada más, sin pagar nada.</p>
+</div>
+
+<div class="card">
+  <h2>⚡ Pedidos de un toque (elige y llena)</h2>
+  <div class="grid">
+    <button class="bt" onclick="pedir('foto')">📸 Crear una FOTO<small>imágenes para redes, portadas…</small></button>
+    <button class="bt" onclick="pedir('video')">🎬 Crear un VIDEO<small>guion completo + guía CapCut</small></button>
+    <button class="bt" onclick="pedir('libro')">📖 Crear un LIBRO<small>cuentos, guías, ebooks</small></button>
+    <button class="bt" onclick="pedir('web')">🕸️ Crear un SITIO WEB<small>de una página, perfecta al móvil</small></button>
+    <button class="bt" onclick="pedir('app')">📱 Crear una APP o BOT<small>programada y lista</small></button>
+    <button class="bt" onclick="pedir('info')">🔍 INVESTIGAR<small>cualquier tema, con veredicto</small></button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🔐 Bóveda personal (solo vive en TU teléfono)</h2>
+  <div class="tabbar">
+    <button class="tab on" id="t-notas" onclick="vault('notas')">📝 Notas</button>
+    <button class="tab" id="t-ideas" onclick="vault('ideas')">💡 Ideas</button>
+    <button class="tab" id="t-metas" onclick="vault('metas')">🎯 Metas</button>
+  </div>
+  <div id="vlista"></div>
+  <div class="nuevo">
+    <input id="vinput" placeholder="Escribe y toca + …">
+    <button onclick="vadd()">＋</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🎬 Guía rápida: tu primer video en CapCut (gratis)</h2>
+  <div class="paso"><b>1.</b> Pídele a tu torre el GUION (botón 🎬 de arriba) — te trae escena por escena.</div>
+  <div class="paso"><b>2.</b> Descarga CapCut en Play Store (gratis, sin VPN).</div>
+  <div class="paso"><b>3.</b> Graba las tomas del guion con tu cámara (o pide las imágenes a tu torre 📸 y úsalas).</div>
+  <div class="paso"><b>4.</b> En CapCut: Proyecto nuevo → importa tus clips/fotos en orden.</div>
+  <div class="paso"><b>5.</b> Toca "Texto" → pega los textos en pantalla del guion (uno por escena).</div>
+  <div class="paso"><b>6.</b> Toca "Audio" → "Sonidos" → busca el ánimo que sugiere el guion.</div>
+  <div class="paso"><b>7.</b> Exportar (1080p) → publicar. Con 3 videos ya eres experta. 🚀</div>
+</div>
+
+<div class="card">
+  <h2>🗝️ Los 5 secretos para pedirle bien a tu torre</h2>
+  <div class="paso"><b>1.</b> <b>Sé específica:</b> "foto de un gato azul estilo dibujo, colores brillantes, para portada" > "hazme una foto".</div>
+  <div class="paso"><b>2.</b> <b>Dice el PARA QUÉ:</b> si es para IG, para vender, para regalar — cambia todo el resultado.</div>
+  <div class="paso"><b>3.</b> <b>Pide iterar:</b> "me gusta pero más oscuro" — la torre corrige sin empezar de cero.</div>
+  <div class="paso"><b>4.</b> <b>Guarda lo bueno:</b> lo que te encante, guárdalo aquí en la Bóveda 💡.</div>
+  <div class="paso"><b>5.</b> <b>Verifica antes de publicar:</b> tu torre siempre verifica; tú siempre das el último visto bueno.</div>
+</div>
+
+<div class="nota">ASTRA v1.0 · Fabricada por la torre para Mia · 1/10/2026<br>Funciona sin internet después de abrirla · Tus notas nunca salen de tu teléfono</div>
+
+<!-- MODAL DE PEDIDOS -->
+<div class="modal" id="modal">
+  <div class="mbox">
+    <h3 id="mtit">Pedido</h3>
+    <div id="mcampos"></div>
+    <div class="preview" id="mprev"></div>
+    <button class="copiar" onclick="copiar()">📋 Copiar mi pedido</button>
+    <button class="cerrar" onclick="document.getElementById('modal').classList.remove('on')">✕ cerrar</button>
+  </div>
+</div>
+
+<script>
+var PEDIDOS = {
+foto:{t:"📸 Pedir una FOTO",c:[["q","Describe la imagen (qué se ve, qué hace, ambiente)"],["est","Estilo","select",["foto realista","ilustración 3D","dibujo animado","minimalista moderno","pintura artística"]],["uso","Para qué es","select",["post de Instagram","historia","portada de producto","logo/branding","regalo personal"]],["col","Colores que te gustan (opcional)","text"]],p:function(v){return "Hazme una imagen: "+v.q+".\nEstilo: "+v.est+".\nPara: "+v.uso+(v.col?"."+v.col:"")+".\nHazla llamativa y perfecta para el móvil."}},
+video:{t:"🎬 Pedir un VIDEO (guion + montaje)",c:[["tema","De qué trata el video"],["dur","Duración","select",["15 segundos (historia)","30 segundos","1 minuto","2-3 minutos"]],["uso","Dónde se publicará","select",["Instagram","TikTok","Facebook","YouTube"]],["extra","Algo que deba incluir sí o sí (opcional)","text"]],p:function(v){return "Escríbeme el GUION COMPLETO de un video de "+v.dur+" sobre: "+v.tema+", para "+v.uso+".\nDame: 1) gancho de los primeros 3 segundos, 2) escena por escena con la descripción visual exacta de cada toma, 3) el texto en pantalla de cada escena, 4) qué música/ánimo usar, 5) llamada a la acción final."+(v.extra?" Debe incluir: "+v.extra+".")+"\nSi necesito imágenes para las escenas, dime cuáles pedirtelas después."}},
+libro:{t:"📖 Pedir un LIBRO",c:[["tema","Tema o historia del libro"],["cap","Capítulos","select",["1 (cuento corto)","3","5","10"]],["pub","Público","select",["niños","jóvenes","adultos","dueños de negocios"]],["ton","Tono","select",["divertido","inspirador","educativo","misterio","romántico"]]],p:function(v){return "Escríbeme un libro de "+v.cap+" capítulo(s) sobre: "+v.tema+".\nPúblico: "+v.pub+". Tono: "+v.ton+".\nEmpieza por un índice con títulos atractivos y luego escribe el primer capítulo completo. Al final sugiéreme la imagen de portada exacta para pedírtela."}},
+web:{t:"🕸️ Pedir un SITIO WEB",c:[["neg","Nombre y de qué trata (negocio, marca, tema)"],["sec","Secciones que quieres (ej: quién soy, productos, precios, contacto)","text"],["col","Colores favoritos","text"],["wa","¿Botón de WhatsApp? (pon tu número si sí)","text"]],p:function(v){return "Créame un sitio web completo de una sola página sobre: "+v.neg+".\nSecciones: "+(v.sec||"las que tú recomiendes")+".\nColores: "+(v.col||"a tu gusto profesional")+"."+(v.wa&&v.wa!="no"?" Con botón de WhatsApp al número "+v.wa+".":"")+"\nQue se vea perfecta en el teléfono, moderna y que venda."}},
+app:{t:"📱 Pedir una APP o BOT",c:[["que","¿Qué debe hacer? (función principal)"],["quien","¿Quién la va a usar?","text"],["donde","Dónde debe vivir","select",["Telegram (bot)","página web","mi teléfono (web app)"]]],p:function(v){return "Créame una app/bot que: "+v.que+".\nLa usarán: "+(v.quien||"yo y mis clientes")+". Debe vivir en: "+v.donde+".\nDiseña primero cómo funciona (paso a paso) y luego fabrícala completa."}},
+info:{t:"🔍 Pedir una INVESTIGACIÓN",c:[["tema","Qué quieres investigar"],["para","Para qué lo necesitas (decidir, comprar, aprender)","text"]],p:function(v){return "Investiga a fondo: "+v.tema+".\nLo necesito para: "+(v.para||"decidir bien")+".\nBusca fuentes reales y actuales, dame pros y contras con números, y termina con tu VEREDICTO claro y honesto — sin adornos."}}
+};
+var pedidoActual = null, camposActuales = {};
+function pedir(k){
+  pedidoActual = k; camposActuales = {};
+  var p = PEDIDOS[k];
+  document.getElementById("mtit").textContent = p.t;
+  var h = "";
+  p.c.forEach(function(c,i){
+    var id = "f"+i;
+    camposActuales[id] = c;
+    h += '<div class="campo"><label>'+c[1]+'</label>';
+    if(c[2]=="select"){
+      h += '<select id="'+id+'">'+c[3].map(function(o){return "<option>"+o+"</option>"}).join("")+'</select>';
+    } else if(c[0]=="q" || c[0]=="tema" || c[0]=="que" || c[0]=="neg"){
+      h += '<textarea id="'+id+'"></textarea>';
+    } else {
+      h += '<input id="'+id+'">';
+    }
+    h += '</div>';
+  });
+  h += '<button class="copiar" style="background:linear-gradient(135deg,#5b2ea6,#8a4fd3);color:#fff" onclick="preview()">👁️ Ver mi pedido armado</button>';
+  document.getElementById("mcampos").innerHTML = h;
+  document.getElementById("mprev").textContent = "";
+  document.getElementById("modal").classList.add("on");
+}
+function vals(){
+  var v = {};
+  Object.keys(camposActuales).forEach(function(id){
+    v[camposActuales[id][0]] = document.getElementById(id).value.trim();
+  });
+  return v;
+}
+function preview(){ document.getElementById("mprev").textContent = PEDIDOS[pedidoActual].p(vals()); }
+function copiar(){
+  var txt = PEDIDOS[pedidoActual].p(vals());
+  function ok(){ document.getElementById("mprev").textContent = "✅ ¡Copiado! Ahora pégalo en el chat de tu torre (Arena.ai) y envíalo."; }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(ok, fallback); } else { fallback(); }
+  function fallback(){
+    var ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand("copy"); ok(); }catch(e){ alert("Cópialo a mano:\n\n"+txt); }
+    document.body.removeChild(ta);
+  }
+}
+var vtab = "notas";
+function vdata(){ try { return JSON.parse(localStorage.getItem("astra_"+vtab) || "[]"); } catch(e){ return []; } }
+function vsave(d){ try { localStorage.setItem("astra_"+vtab, JSON.stringify(d)); } catch(e){} }
+function vault(t){
+  vtab = t;
+  ["notas","ideas","metas"].forEach(function(x){ document.getElementById("t-"+x).className = "tab"+(x==t?" on":""); });
+  vpintar();
+}
+function vpintar(){
+  var d = vdata(), h = "";
+  d.forEach(function(it,i){
+    h += '<div class="item"><div><b>'+it.f+'</b>'+it.t+'</div><button class="del" onclick="vdel('+i+')">🗑</button></div>';
+  });
+  document.getElementById("vlista").innerHTML = h || '<div class="nota" style="margin-top:4px">(vacío — escribe tu primera entrada abajo)</div>';
+}
+function vadd(){
+  var inp = document.getElementById("vinput"), t = inp.value.trim();
+  if(!t) return;
+  var d = vdata();
+  d.unshift({t:t, f:new Date().toLocaleDateString("es-ES",{day:"numeric",month:"short"})});
+  vsave(d); inp.value=""; vpintar();
+}
+function vdel(i){ var d=vdata(); d.splice(i,1); vsave(d); vpintar(); }
+vault("notas");
+</script>
+</body>
+</html>
